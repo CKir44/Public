@@ -83,6 +83,10 @@ def find_sentence_with_keyword(text, keyword):
             return sentence.text
     return "No sentence containing the keyword found."
 
+# Add a simple route for the root URL
+@app.route("/", methods=["GET"])
+def home():
+    return "Welcome to the Article Summarizer API!"
 @app.route("/chat", methods=["POST"])
 def chat():
     user_input = request.json.get("message").lower()
