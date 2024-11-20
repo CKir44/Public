@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Summarizer</title>
+    <style>
+        body {
+            background-color: #FF7518; /* Pumpkin orange background */
+            color: black; /* Black text */
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .welcome-message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .input-box {
+            margin-bottom: 20px;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid black;
+            border-radius: 5px;
+            text-align: left;
+        }
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .input-box button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .input-box button:hover {
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-message">
+            Hi, I am the Article Summarizer! How can I help you?
+        </div>
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="Type your question here...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+        <div id="output" class="output"></div>
+    </div>
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+            const outputDiv = document.getElementById("output");
+
+            if (!userInput.trim()) {
+                outputDiv.innerHTML = "Please enter a question.";
+                return;
+            }
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: userInput })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to get response from server.");
+                }
+
+                const data = await response.json();
+                outputDiv.innerHTML = `<strong>Response:</strong> ${data.response}`;
+            } catch (error) {
+                outputDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            } finally {
+                document.getElementById("userInput").value = ""; // Clear input box
+            }
+        }
+    </script>
+</body>
+</html>
+

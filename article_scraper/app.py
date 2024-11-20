@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import pyodbc
 import spacy
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
 import os
 from dotenv import load_dotenv
-
 
 app = Flask(__name__)
 
@@ -83,17 +82,19 @@ def find_sentence_with_keyword(text, keyword):
             return sentence.text
     return "No sentence containing the keyword found."
 
-# Add a simple route for the root URL
+# Route to render the HTML page
 @app.route("/", methods=["GET"])
-def home():
-    return "Welcome to the Article Summarizer API!"
+def index():
+    return render_template("index.html")
+
+# Route for chatbot interaction
 @app.route("/chat", methods=["POST"])
 def chat():
     user_input = request.json.get("message").lower()
 
     # Initial greeting
     if user_input in ["hi", "hello", "hey"]:
-        return jsonify({"response": "Hi, I am the Article Summarizer! How can I help you?"})
+        return jsonify({"response": "Hi, I am the Article Summarizer! I can give you information about any articles currently in my database!"})
 
     # Define article_text_1 and article_text_2 at the beginning
     article_text_1 = get_article_text(1)
