@@ -22,7 +22,7 @@ defusedxml==0.7.1
 en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85
 filelock==3.16.1
 Flask==3.1.0
-gensim
+gensim==3.8.3
 hyperlink==21.0.0
 idna==3.10
 importlib_metadata==8.5.0
@@ -60,7 +60,7 @@ queuelib==1.7.0
 requests==2.32.3
 requests-file==2.1.0
 rich==13.9.4
-scipy
+scipy==1.5.4
 Scrapy==2.11.2
 service-identity==24.2.0
 shellingham==1.5.4
