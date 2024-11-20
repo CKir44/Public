@@ -5,7 +5,6 @@ from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
 import os
 from dotenv import load_dotenv
-from gensim.summarization import summarize
 
 app = Flask(__name__)
 
@@ -13,6 +12,7 @@ app = Flask(__name__)
 nlp = spacy.load("en_core_web_sm")
 
 load_dotenv()
+
 # Function to connect to your Azure SQL Database
 def connect_to_database():
     server = os.environ.get("DB_SERVER")
@@ -30,8 +30,7 @@ def connect_to_database():
 def clean_text(text):
     return text.replace("\n", " ").replace("\r", " ").strip()
 
-
-
+# Function to get article text
 def get_article_text(article_id):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -40,17 +39,7 @@ def get_article_text(article_id):
     conn.close()
     return row[0] if row else "Article not found."
 
-# Function to fetch article summary
-def get_article_summary(article_id):
-    conn = connect_to_database()
-    cursor = conn.cursor()
-    cursor.execute("SELECT summary FROM dbo.Articles WHERE id = ?", (article_id,))
-    row = cursor.fetchone()
-    conn.close()
-    return row[0] if row else "Summary not available."
-
 # Function to fetch author information (update with actual data)
-#Couldnt find correct html markers for each article so hard coded it in
 def get_article_author(article_id):
     if article_id == 1:
         return "Author of the first article is: [Mark C. Gridley]"
@@ -59,13 +48,14 @@ def get_article_author(article_id):
     else:
         return "Author information not available."
 
-# Function to generate a summary using Gensim
+# Function to generate a simple summary using spaCy
 def generate_summary(text):
-    try:
-        summary = summarize(text, word_count=100)  # Adjust word_count as needed
-        return summary
-    except ValueError:
-        return "Summary could not be generated."
+    doc = nlp(text)
+    sentences = [sent.text for sent in doc.sents]
+    if len(sentences) <= 3:
+        return " ".join(sentences)
+    else:
+        return " ".join(sentences[:3])  # Adjust number of sentences as needed
 
 # Function to perform NLP analysis using spaCy
 def analyze_text_with_spacy(text):
