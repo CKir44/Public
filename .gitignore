@@ -4,3 +4,8 @@
 # Ignore other sensitive files or directories (if any)
 __pycache__/
 *.pyc
+
+venv/
+VENV/
+
+.idea/
