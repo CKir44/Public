@@ -41,7 +41,7 @@ markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 mdurl==0.1.2
 murmurhash==1.0.10
-numpy==1.26.4
+numpy==1.21.6
 packaging==24.1
 parsel==1.9.1
 preshed==3.0.9
